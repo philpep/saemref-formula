@@ -63,12 +63,6 @@ legacy cleanup:
       - uwsgi
       - uwsgi-plugin-python
 
-{% if pillar.get('upgrade', False) %}
-drop old virtualenv:
-  file.absent:
-    - name: /home/{{ saemref.instance.user }}/venv
-{% endif %}
-
 venv:
   virtualenv.managed:
     - name: /home/{{ saemref.instance.user }}/venv
@@ -76,9 +70,6 @@ venv:
     - user: {{ saemref.instance.user }}
     - require:
       - pkg: legacy cleanup
-      {% if pillar.get('upgrade', False) %}
-      - file: drop old virtualenv
-      {% endif %}
 
 cubicweb in venv:
   pip.installed:
